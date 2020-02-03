@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-
+#include <string.h>
 
 void displayArray(void* array, int size, int type); 
 /*
@@ -17,3 +17,4 @@ void updateRandomSeed();
 
 int RandomizedInt(int a, int b);
 
+void printArraySize(void* array);

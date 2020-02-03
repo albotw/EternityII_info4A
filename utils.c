@@ -29,3 +29,8 @@ void displayArray(void* array, int size, int type)
     }
     println();
 }
+
+void printArraySize(void* array)
+{
+    printf("%ld", strlen(array));
+}

@@ -37,12 +37,12 @@ void generateTab(int size, int mode)
 
 piece getPieceAt(int x, int y)
 {
-    return tab[x + cote * y];
+    return tab[(y + cote * x)];
 }
 
 void draw(piece tab[])
 {
-    for (int i = 0; i < cote; i++)
+    for (int i = 0; i < 1; i++)
     {
         char top[(5*cote)];
         char mid[(5*cote)];
@@ -51,12 +51,15 @@ void draw(piece tab[])
         for (int j = 0; j < cote; j++)
         {
             piece p = getPieceAt(i, j);
-            strcat(top, sprintf(top, "%c", p.N));
-            sprintf(mid, "%c%c", p.W, p.E);
-            sprintf(bot, "%c", p.S);
+            sprintf(top + strlen(top), "%c", p.N);
+            sprintf(mid + strlen(mid), "%c%c", p.W, p.E);
+            sprintf(bot + strlen(bot), "%c", p.S);
+
+            printf("%c", p.N);
+            println();
         }
         
-        printf("%ld", strlen(top));
+        printf("%s", top);
         println();
         printf("%s", mid);
         println();
