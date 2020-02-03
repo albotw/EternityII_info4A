@@ -22,18 +22,58 @@ void generateTab(int size, int mode)
             break;
     }
     
+    cote = size;
+
     piece temp[nbPieces];
     tab = temp;
+
+    for (int i = 0; i < nbPieces; i++)
+    {
+        position pos = {0, 0};
+        piece p = {'A', 'B', 'C', 'D', pos};
+        tab[i] = p;
+    }
 }
 
+piece getPieceAt(int x, int y)
+{
+    return tab[x + cote * y];
+}
+
+void draw(piece tab[])
+{
+    for (int i = 0; i < cote; i++)
+    {
+        char top[(5*cote)];
+        char mid[(5*cote)];
+        char bot[(5*cote)];
+
+        for (int j = 0; j < cote; j++)
+        {
+            piece p = getPieceAt(i, j);
+            strcat(top, sprintf(top, "%c", p.N));
+            sprintf(mid, "%c%c", p.W, p.E);
+            sprintf(bot, "%c", p.S);
+        }
+        
+        printf("%ld", strlen(top));
+        println();
+        printf("%s", mid);
+        println();
+        printf("%s", bot);
+        println();
+    }
+}
 
 int main()
 {
     printf("Hello, World\n");
 
     generateTab(4, 1);
-    displayArray(tab, nbPieces, 1);
+    printf("%c", tab[0].N);
+    println();
     printf("%d", nbPieces);
     println();
+    draw(tab);
     return 0;
 }
