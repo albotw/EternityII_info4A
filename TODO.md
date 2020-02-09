@@ -1,21 +1,26 @@
-* Implémentation totale des méthodes
-* IA
-* UX
-* UI (Police unicode et code ANSI)
+vérification de victoire:
+    cas critique: 56 pièces = 56 * 4 cotés / 2 tests simultanés == beaucoup pour pas grand chose
 
+PRESENCE DU POINTEUR TAB IMPLICITE: PAS D'APPEL DANS LES PARAMETRES
 
 ### Notes:
+
 * #### mapping 2D / 1D
-    * i = x + width * y;
-    * x = i % width;
-    * y = i / width;
+
+  * i = x + width * y;
+  * x = i % width;
+  * y = i / width;
+
 * ### mapping 3D / 1D
-    * i = x + width * y + width * height * z;
-    * x = i % width;
-    * y = (i / width) % height;
-    * z = i / (width / height);
 
+  * i = x + width * y + width * height * z;
+  * x = i % width;
+  * y = (i / width) % height;
+  * z = i / (width / height);
 
+  N
+W # E
+  S
 
   B    A    C    D  
 A # CC # DD # BB # A

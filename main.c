@@ -28,13 +28,12 @@ void generateTab(int size, int mode)
 
     for (int i = 0; i < nbPieces; i++)
     {
-        position pos = {0, 0};
-        piece p = {'A', 'B', 'C', 'D', pos};
+        piece p = {'A', 'B', 'C', 'D'};
         tab[i] = p;
     }
-    
-
 }
+
+
 
 piece getPieceAt(int x, int y)
 {
@@ -44,6 +43,21 @@ piece getPieceAt(int x, int y)
 void setPieceAt(int x, int y, piece p)
 {
     tab[(x + (cote * y))] = p;
+}
+
+void swap(int x1, int y1, int x2, int y2)
+{
+    piece temp = getPieceAt(x1, y1);
+    piece temp2 = getPieceAt(x2, y2);
+    setPieceAt(x1, y1, temp2);
+    setPieceAt(x2, y2, temp);    
+}
+
+void rotate(int x, int y)
+{
+    piece origine = getPieceAt(x, y);
+    piece new = {origine.W, origine.N, origine.E, origine.S};
+    setPieceAt(x, y, new);
 }
 
 char* formatChar(char c)
@@ -76,7 +90,7 @@ char* formatChar(char c)
     return S;
 }
 
-void draw(piece tab[])
+void draw()
 {
     for (int i = 0; i < cote; i++)
     {
@@ -96,17 +110,11 @@ void draw(piece tab[])
             c = formatChar(p.N);
             sprintf(top + strlen(top), "  %s   ", c);
 
-
-
             c = formatChar(p.W);
-            sprintf(mid + strlen(mid), "%s + ", c);
-
-
+            sprintf(mid + strlen(mid), "%s # ", c);
 
             c = formatChar(p.E);
             sprintf(mid + strlen(mid), "%s ", c);
-
-
 
             c = formatChar(p.S);
             sprintf(bot + strlen(bot), "  %s   ", c);
@@ -122,13 +130,21 @@ int main()
 {
     printf("\033[48;5;11m\033[38;5;0mHello\033[0m\n");
 
-    generateTab(4, 1);
+    generateTab(7, 1);
     printf("%c", tab[0].N);
     println();
     printf("%d", nbPieces);
     println();
     draw(tab);
 
+    rotate(0, 0);
+
+    rotate(1, 1);
+    rotate(1, 1);
+
+    swap(1, 1, 3, 3);
+    println();
+    draw(tab);
     free(tab);
     return 0;
 }
