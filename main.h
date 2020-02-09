@@ -27,6 +27,7 @@ void swap(int posX1,int posY1, int posX2, int posY2);
 
 piece getPieceAt(int x, int y);
 
+void setPieceAt(int x, int y, piece p);
 
 void draw(piece tab[]);
 
@@ -36,4 +37,8 @@ void checkVictory(piece tab[]);
 
 void readCommand();
 
+char* formatChar(char c);
+
 void AI();
+
+

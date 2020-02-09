@@ -32,5 +32,5 @@ void displayArray(void* array, int size, int type)
 
 void printArraySize(void* array)
 {
-    printf("%ld", strlen(array));
+    printf("%ld\n", strlen(array));
 }

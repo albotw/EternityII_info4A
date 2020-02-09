@@ -24,8 +24,7 @@ void generateTab(int size, int mode)
     
     cote = size;
 
-    piece temp[nbPieces];
-    tab = temp;
+    tab = malloc(nbPieces * sizeof(piece));
 
     for (int i = 0; i < nbPieces; i++)
     {
@@ -33,44 +32,95 @@ void generateTab(int size, int mode)
         piece p = {'A', 'B', 'C', 'D', pos};
         tab[i] = p;
     }
+    
+
 }
 
 piece getPieceAt(int x, int y)
 {
-    return tab[(y + cote * x)];
+    return tab[(x + (cote * y))];
+}
+
+void setPieceAt(int x, int y, piece p)
+{
+    tab[(x + (cote * y))] = p;
+}
+
+char* formatChar(char c)
+{
+    char* S = malloc(25 * sizeof(char));
+    switch (c)
+    {
+        case 'A':
+        {
+            S = "\033[48;5;9m\033[38;5;0mA\033[0m";
+            break;
+        }
+        case 'B':
+        {
+            S = "\033[48;5;13m\033[38;5;0mB\033[0m";
+            break;
+        }
+        case 'C':
+        {
+            S = "\033[48;5;11m\033[38;5;0mC\033[0m";
+            break;
+        }
+        case 'D':
+        {
+            S = "\033[48;5;14m\033[38;5;0mD\033[0m";
+            break;
+        }
+    }
+
+    return S;
 }
 
 void draw(piece tab[])
 {
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < cote; i++)
     {
-        char top[(5*cote)];
-        char mid[(5*cote)];
-        char bot[(5*cote)];
+        char top[(30*cote)];
+        char mid[(60*cote)];
+        char bot[(30*cote)];
 
+        top[0] = '\0';
+        mid[0] = '\0';
+        bot[0] = '\0';
+
+        char* c = NULL;
         for (int j = 0; j < cote; j++)
         {
-            piece p = getPieceAt(i, j);
-            sprintf(top + strlen(top), "%c", p.N);
-            sprintf(mid + strlen(mid), "%c%c", p.W, p.E);
-            sprintf(bot + strlen(bot), "%c", p.S);
+            piece p = getPieceAt(j, i);
 
-            printf("%c", p.N);
-            println();
+            c = formatChar(p.N);
+            sprintf(top + strlen(top), "  %s   ", c);
+
+
+
+            c = formatChar(p.W);
+            sprintf(mid + strlen(mid), "%s + ", c);
+
+
+
+            c = formatChar(p.E);
+            sprintf(mid + strlen(mid), "%s ", c);
+
+
+
+            c = formatChar(p.S);
+            sprintf(bot + strlen(bot), "  %s   ", c);
         }
         
-        printf("%s", top);
-        println();
-        printf("%s", mid);
-        println();
-        printf("%s", bot);
-        println();
+        printf("%s\n", top);
+        printf("%s\n", mid);
+        printf("%s\n", bot);
     }
 }
 
 int main()
 {
-    printf("Hello, World\n");
+    printf("\033[48;5;11m\033[38;5;0mHello\033[0m\n");
 
     generateTab(4, 1);
     printf("%c", tab[0].N);
@@ -78,5 +128,7 @@ int main()
     printf("%d", nbPieces);
     println();
     draw(tab);
+
+    free(tab);
     return 0;
 }
