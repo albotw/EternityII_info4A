@@ -24,7 +24,7 @@ void generateTab(int size, int mode)
     
     cote = size;
 
-    tab = malloc(nbPieces * sizeof(piece));
+    tab = (piece* )_malloc(nbPieces * sizeof(piece));
 
     for (int i = 0; i < nbPieces; i++)
     {
@@ -130,7 +130,7 @@ int main()
 {
     printf("\033[48;5;11m\033[38;5;0mHello\033[0m\n");
 
-    generateTab(7, 1);
+    generateTab(4, 1);
     printf("%c", tab[0].N);
     println();
     printf("%d", nbPieces);
@@ -144,7 +144,8 @@ int main()
 
     swap(1, 1, 3, 3);
     println();
+    
     draw(tab);
-    free(tab);
+    _free(tab);
     return 0;
 }

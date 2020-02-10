@@ -3,6 +3,17 @@ vérification de victoire:
 
 PRESENCE DU POINTEUR TAB IMPLICITE: PAS D'APPEL DANS LES PARAMETRES
 
+A faire:
+    Generateur de tableau
+    Reception et parsing des entrées
+    IA
+    verification et test
+    --> fonction capable de tester / générer une pièce en fonction de ses alentours.
+
+
+0x7ffbffffae58 | 0x7ffbffffae50
+
+
 ### Notes:
 
 * #### mapping 2D / 1D

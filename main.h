@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "libs/dynamicMemoryManager.h"
+
 typedef struct{
     char N;
     char E;
