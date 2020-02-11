@@ -15,32 +15,29 @@ int find(int mode, void* adr)
         int found = 0;
         for(int i = 0; i < nbBlocks; i++)
         {
-            void** ptr = blocks[i]->adr;
-            printf("%p | %p\n", &ptr, adr);
-            if (found == 0 && blocks[i]->adr == adr)
+            void* ptr = blocks[i]->adr;
+            if (found == 0 && &(*ptr) == &(*adr))
             {
                 output = i;
                 found = 1;
             }
         }
     }
-
     return output;
 }
 
 void* _malloc(unsigned size)
 {
-    if (dmSize + size <= maxBlocks)
+    if (dmSize + size <= maxSize && nbBlocks + 1 <= maxBlocks)
     {
         dmSize = dmSize + size;
         nbBlocks++;
 
-        block b = {size, malloc(size)};
+        block b = {malloc(size), size};
 
         int position = find(0, NULL);
         blocks[position] = &b;
         
-        printf("%p\n", b.adr);
         return b.adr;
     }
     else
@@ -52,15 +49,13 @@ void* _malloc(unsigned size)
 
 void _free(void* adr)
 {
-    int position = find(1, adr);
-    printf("test past position, %d \n", position);
-    block* b = blocks[position];
-    printf("test post recup");
-    printf("%ul", (*b).size);
-    dmSize = dmSize - (*b).size;
     
-    free((*b).adr);
-
-    //blocks[position] = NULL;
+    int position = find(1, adr);
+    block* b = blocks[position];
+    dmSize = dmSize - b->size;
+    
+    free(adr);
+    
+    blocks[position] = NULL;
 }
 

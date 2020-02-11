@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define maxBlocks 20000
+#define maxSize 50000
+#define maxBlocks 5000
 
 typedef struct{
-    int size;
     void* adr;
+    int size;
 }block;
 
 unsigned dmSize;

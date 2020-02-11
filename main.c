@@ -62,7 +62,7 @@ void rotate(int x, int y)
 
 char* formatChar(char c)
 {
-    char* S = malloc(25 * sizeof(char));
+    char* S = _malloc(25 * sizeof(char));
     switch (c)
     {
         case 'A':
@@ -109,6 +109,9 @@ void draw()
 
             c = formatChar(p.N);
             sprintf(top + strlen(top), "  %s   ", c);
+            printf("%d\n", nbBlocks);
+            _free(c);
+            c = NULL;
 
             c = formatChar(p.W);
             sprintf(mid + strlen(mid), "%s # ", c);
@@ -135,17 +138,8 @@ int main()
     println();
     printf("%d", nbPieces);
     println();
-    draw(tab);
+    draw();
 
-    rotate(0, 0);
-
-    rotate(1, 1);
-    rotate(1, 1);
-
-    swap(1, 1, 3, 3);
-    println();
-    
-    draw(tab);
     _free(tab);
     return 0;
 }
