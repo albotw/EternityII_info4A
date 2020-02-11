@@ -43,10 +43,10 @@ void draw();
 //* DONE
 //! Fuite mémoire possible avec le retour de formatChar, pas moyen de free les malloc dans draw.
 
-void checkConflicts(piece tab[]);   
+void checkConflicts();   
 // TODO:
 
-void checkVictory(piece tab[]);     
+void checkVictory();     
 // TODO:
 
 void readCommand();     

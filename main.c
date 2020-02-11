@@ -109,9 +109,6 @@ void draw()
 
             c = formatChar(p.N);
             sprintf(top + strlen(top), "  %s   ", c);
-            printf("%d\n", nbBlocks);
-            _free(c);
-            c = NULL;
 
             c = formatChar(p.W);
             sprintf(mid + strlen(mid), "%s # ", c);

@@ -7,12 +7,9 @@ A faire:
     Generateur de tableau
     Reception et parsing des entrées
     IA
+    debogage fuite mémoire draw.
     verification et test
     --> fonction capable de tester / générer une pièce en fonction de ses alentours.
-
-
-0x7ffbffffae58 | 0x7ffbffffae50
-
 
 ### Notes:
 
