@@ -62,7 +62,7 @@ void rotate(int x, int y)
 
 char* formatChar(char c)
 {
-    char* S = _malloc(25 * sizeof(char));
+    char* S = malloc(25 * sizeof(char));
     switch (c)
     {
         case 'A':
