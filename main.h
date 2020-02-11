@@ -43,10 +43,13 @@ void draw();
 //* DONE
 //! Fuite mémoire possible avec le retour de formatChar, pas moyen de free les malloc dans draw.
 
-void checkConflicts();   
+int checkConflicts();   
 // TODO:
 
 void checkVictory();     
+// TODO:
+
+piece generateFromContext();
 // TODO:
 
 void readCommand();     
@@ -59,4 +62,6 @@ char* formatChar(char c);
 void AI();      
 // TODO:
 
+int choix();
 
+int rejouer();

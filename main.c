@@ -1,6 +1,36 @@
 #include "main.h"
 #include "utils.h"
 
+int checkConflicts()
+{
+    int conflits = 0;
+    for(int i = 0; i < cote; i++)
+    {
+        for (int j = 0; j < cote; j++)
+        {
+            piece p = getPieceAt(j, i);
+
+            if (getPieceAt(j - 1, i).E != p.W)
+            {
+                conflits++;
+            }
+            if (getPieceAt(j, i - 1).S != p.N)
+            {
+                conflits++;
+            } 
+            if (getPieceAt(j + 1, i).W != p.E){
+                conflits++;
+            }
+            if (getPieceAt(j, i + 1).N != p.S)
+            {
+                conflits++;
+            }
+        }
+    }
+
+    return conflits / 2;
+}
+
 void generateTab(int size, int mode)
 {
     switch (size)
@@ -24,7 +54,7 @@ void generateTab(int size, int mode)
     
     cote = size;
 
-    tab = (piece* )_malloc(nbPieces * sizeof(piece));
+    tab = (piece* )malloc(nbPieces * sizeof(piece));
 
     for (int i = 0; i < nbPieces; i++)
     {
@@ -37,6 +67,23 @@ void generateTab(int size, int mode)
 
 piece getPieceAt(int x, int y)
 {
+    if (x < 0)
+    {
+        x = cote -1;
+    }
+    else if (x > cote -1)
+    {
+        x = 0;
+    }
+
+    if (y < 0)
+    {
+        y = cote - 1;
+    } 
+    else if (x > cote - 1)
+    {
+        y = 0;
+    }
     return tab[(x + (cote * y))];
 }
 
@@ -128,15 +175,61 @@ void draw()
 
 int main()
 {
-    printf("\033[48;5;11m\033[38;5;0mHello\033[0m\n");
+    int restart = 0;
 
-    generateTab(4, 1);
-    printf("%c", tab[0].N);
-    println();
-    printf("%d", nbPieces);
-    println();
-    draw();
+    do
+    {
+        restart = 0;
+        int taille = choix();
+        generateTab(taille + 3, 1);
+        draw();
 
-    _free(tab);
+        restart = rejouer();
+
+        if (restart)
+        {
+            free(tab);
+            tab = NULL;
+        }
+    }
+    while(restart);
     return 0;
+}
+
+int choix()
+{
+    int y;
+    int loop = 0;
+    do
+    {
+        loop = 0;
+        printf("Quelle taille de tableau allez vous prendre ?\n");
+        printf("1: 4x4\n");
+        printf("2: 5x5\n");
+        printf("3: 6x6\n");
+        printf("4: 7x7\n");
+        scanf("%d", &y);
+
+        if (1 > y || y > 4)
+        {
+            loop = 1;
+            printf("Erreur: option invalide\n");
+        }
+    } while (loop);
+    return y;
+}
+
+int rejouer()
+{
+    int temp;
+    printf("Rejouer ?\n");
+    printf("1: Oui\n");
+    printf("2: Non\n");
+    scanf("%d", &temp);
+
+    if (temp == 2)
+    {
+        temp = 0;
+    }
+    return temp;
 }

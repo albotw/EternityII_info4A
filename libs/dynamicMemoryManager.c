@@ -16,7 +16,7 @@ int find(int mode, void* adr)
         for(int i = 0; i < nbBlocks; i++)
         {
             void* ptr = blocks[i]->adr;
-            if (found == 0 && &(*ptr) == &(*adr))
+            if (found == 0 && ptr == adr)
             {
                 output = i;
                 found = 1;
