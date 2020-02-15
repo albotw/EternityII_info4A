@@ -173,19 +173,71 @@ void draw()
     }
 }
 
+void readCommand()
+{
+    printf("Coordonnées possibles: x ~= [%c,%c] | y ~= [%d,%d]\n",'A', 'A' + cote -1, 0, cote - 1);
+    printf("usage: XY ~> rotation | X1Y1X2Y2 ~> echange\n");
+
+    char* command = calloc(5, sizeof(char));
+    scanf("%s", command);
+
+    if (strlen(command) == 2)
+    {
+        int x = 'A' - command[0];
+        int y = '0' - command[1];
+        printf("Rotation: %d|%d\n", x, y);
+        if (0 <= x && x <= cote && 0 <= y && y <= cote)
+        {
+            rotate(x, y);
+        }
+        else
+        {
+            printf("Erreur: coordonnées invalides\n");
+        }
+    }
+    else if(*(command + 4) == '\0')
+    {
+        int x1 = 'A' - command[0];
+        int y1 = (char)command[1] - '0';
+        int x2 = 'A' - command[2];
+        int y2 = (char)command[3] - '0';
+        printf("Swap: %d|%d ~> %d|%d\n", x1, x2, y1, y2);
+        if (0 <= x1 && x1 <= cote && 0 <= y1 && y1 <= cote && 0 <= x2 && x2 <= cote && 0 <= y2 && y2 <= cote)
+        {
+            swap(x1, y1, x2, y2);
+        }
+        else
+        {
+            printf("Erreur: coordonnées invalides \n");
+        }
+    }
+    else
+    {
+        printf("Erreur: commande non reconnue \n");
+    }
+    free(command);
+}
 int main()
 {
-    int restart = 0;
+    int restart;
 
     do
     {
         restart = 0;
-        int taille = choix();
+        int taille = choixTailleTableau();
         generateTab(taille + 3, 1);
-        draw();
-
+        
+        int victory;
+        do{
+            draw();
+            readCommand();
+            victory = checkConflicts();
+            printf("Il y a %d conflits restants\n", victory);
+            println();
+        }while(victory != 0);
+        
+        
         restart = rejouer();
-
         if (restart)
         {
             free(tab);
@@ -196,7 +248,7 @@ int main()
     return 0;
 }
 
-int choix()
+int choixTailleTableau()
 {
     int y;
     int loop = 0;
@@ -216,6 +268,7 @@ int choix()
             printf("Erreur: option invalide\n");
         }
     } while (loop);
+    println();
     return y;
 }
 

@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "libs/dynamicMemoryManager.h"
+//#include "libs/dynamicMemoryManager.h"
 
 typedef struct{
     char N;
@@ -52,9 +52,6 @@ void checkVictory();
 piece generateFromContext();
 // TODO:
 
-void readCommand();     
-// TODO:
-
 char* formatChar(char c);   
 //* DONE
 // TODO: Voir pour l'utilisation de polices unicodes
@@ -62,6 +59,6 @@ char* formatChar(char c);
 void AI();      
 // TODO:
 
-int choix();
+int choixTailleTableau();
 
 int rejouer();
