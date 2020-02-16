@@ -149,9 +149,23 @@ void draw()
         mid[0] = '\0';
         bot[0] = '\0';
 
+        sprintf(top+strlen(top), "   ");
+        sprintf(mid+strlen(mid), " %d ",i); 
+        sprintf(bot+strlen(bot), "   ");
+
+        if (i == 0)
+        {
+            printf("   ");
+        }
+
         char* c = NULL;
         for (int j = 0; j < cote; j++)
-        {
+        {   
+            if (i == 0)
+            {
+                printf("  %c   ", 'A' + j);
+            }
+
             piece p = getPieceAt(j, i);
 
             c = formatChar(p.N);
@@ -167,6 +181,8 @@ void draw()
             sprintf(bot + strlen(bot), "  %s   ", c);
         }
         
+        if (i == 0){println();}
+
         printf("%s\n", top);
         printf("%s\n", mid);
         printf("%s\n", bot);
@@ -175,17 +191,18 @@ void draw()
 
 void readCommand()
 {
-    printf("Coordonnées possibles: x ~= [%c,%c] | y ~= [%d,%d]\n",'A', 'A' + cote -1, 0, cote - 1);
-    printf("usage: XY ~> rotation | X1Y1X2Y2 ~> echange\n");
+    //printf("Coordonnées possibles: x = [%c,%c] & y = [%d,%d]\n",'A', 'A' + cote -1, 0, cote - 1);
+    println();
+    printf("usage: XY ~> rotation | X1Y1X2Y2 ~> echange | ctrl+c ~> quitter\n");
 
     char* command = calloc(5, sizeof(char));
     scanf("%s", command);
 
     if (strlen(command) == 2)
     {
-        int x = 'A' - command[0];
-        int y = '0' - command[1];
-        printf("Rotation: %d|%d\n", x, y);
+        int x = command[0] - 'A';
+        int y = command[1] - '0';
+        printf("Rotation: %d|%d %c|%c\n", x, y, command[0], command[1]);
         if (0 <= x && x <= cote && 0 <= y && y <= cote)
         {
             rotate(x, y);
@@ -195,13 +212,14 @@ void readCommand()
             printf("Erreur: coordonnées invalides\n");
         }
     }
-    else if(*(command + 4) == '\0')
+    else if(strlen(command) == 4)
     {
-        int x1 = 'A' - command[0];
-        int y1 = (char)command[1] - '0';
-        int x2 = 'A' - command[2];
-        int y2 = (char)command[3] - '0';
-        printf("Swap: %d|%d ~> %d|%d\n", x1, x2, y1, y2);
+        int x1 = command[0] - 'A';
+        int y1 = command[1] - '0';
+        int x2 = command[2] - 'A';
+        int y2 = command[3] - '0';
+
+        printf("Swap: %d|%d ~> %d|%d %c|%c ~> %c|%c\n", x1, x2, y1, y2, command[0], command[1], command[2], command[3]);
         if (0 <= x1 && x1 <= cote && 0 <= y1 && y1 <= cote && 0 <= x2 && x2 <= cote && 0 <= y2 && y2 <= cote)
         {
             swap(x1, y1, x2, y2);
