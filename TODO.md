@@ -5,7 +5,6 @@ PRESENCE DU POINTEUR TAB IMPLICITE: PAS D'APPEL DANS LES PARAMETRES
 
 A faire:
     Generateur de tableau
-    Reception et parsing des entrées
     IA
     debogage fuite mémoire draw.
     verification et test

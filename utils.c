@@ -34,3 +34,13 @@ void printArraySize(void* array)
 {
     printf("%ld\n", strlen(array));
 }
+
+void updateRandomSeed()
+{
+    srand(time(NULL));
+}
+
+int RandomizedInt(int a, int b)
+{
+    return (rand() % (b - a)) + a;
+}

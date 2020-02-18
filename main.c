@@ -31,6 +31,38 @@ int checkConflicts()
     return conflits / 2;
 }
 
+char generateFaceFromContext(int x, int y, char face)
+{
+    char temp = '\0';
+    switch(face)
+    {
+        case 'N':
+            temp = getPieceAt(x, y-1).S;
+            break;
+
+        case 'S':
+            temp = getPieceAt(x, y+1).N;
+            break;
+
+        case 'E':
+            temp = getPieceAt(x+1, y).W;
+            break;
+
+        case 'W':
+            temp = getPieceAt(x-1, y).E;
+            break; 
+    }
+
+    if (temp != '\0')
+    {
+        return temp;
+    }
+    else 
+    {
+        return 'A'+RandomizedInt(0, 4);
+    }
+}
+
 void generateTab(int size, int mode)
 {
     switch (size)
@@ -56,10 +88,20 @@ void generateTab(int size, int mode)
 
     tab = (piece* )malloc(nbPieces * sizeof(piece));
 
-    for (int i = 0; i < nbPieces; i++)
+    for (int i = 0; i < cote; i++)
     {
-        piece p = {'A', 'B', 'C', 'D'};
-        tab[i] = p;
+        for (int j = 0; j < cote; j++)
+        {
+            piece p =
+            {
+                generateFaceFromContext(j, i, 'N'),
+                generateFaceFromContext(j, i, 'E'),
+                generateFaceFromContext(j, i, 'S'),
+                generateFaceFromContext(j, i, 'W')
+            };
+            
+            setPieceAt(j, i, p);
+        }
     }
 }
 
@@ -71,7 +113,7 @@ piece getPieceAt(int x, int y)
     {
         x = cote -1;
     }
-    else if (x > cote -1)
+    else if (x > cote - 1)
     {
         x = 0;
     }
@@ -80,7 +122,7 @@ piece getPieceAt(int x, int y)
     {
         y = cote - 1;
     } 
-    else if (x > cote - 1)
+    else if (y > cote - 1)
     {
         y = 0;
     }
@@ -237,6 +279,8 @@ void readCommand()
 }
 int main()
 {
+    updateRandomSeed();
+
     int restart;
 
     do
@@ -248,9 +292,10 @@ int main()
         int victory;
         do{
             draw();
-            readCommand();
             victory = checkConflicts();
             printf("Il y a %d conflits restants\n", victory);
+            readCommand();
+            
             println();
         }while(victory != 0);
         
@@ -274,10 +319,11 @@ int choixTailleTableau()
     {
         loop = 0;
         printf("Quelle taille de tableau allez vous prendre ?\n");
-        printf("1: 4x4\n");
-        printf("2: 5x5\n");
-        printf("3: 6x6\n");
-        printf("4: 7x7\n");
+        printf("1: 4x4 ");
+        printf("2: 5x5 ");
+        printf("3: 6x6 ");
+        printf("4: 7x7 ");
+        println();
         scanf("%d", &y);
 
         if (1 > y || y > 4)

@@ -16,7 +16,8 @@ void updateRandomSeed();
 // TODO:
 
 int RandomizedInt(int a, int b);
-// TODO:
+///* DONE
+//? B > A
 
 void printArraySize(void* array);
 //* DONE

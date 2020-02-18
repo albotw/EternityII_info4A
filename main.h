@@ -14,7 +14,7 @@ typedef struct{
 piece* tab;
 
 int cote;   
-//? taille du côté
+//? taille du côté du tableau
 
 int nbPieces;
 
@@ -44,12 +44,10 @@ void draw();
 //! Fuite mémoire possible avec le retour de formatChar, pas moyen de free les malloc dans draw.
 
 int checkConflicts();   
-// TODO:
+//* DONE
+//! Optimisation possible mais code plus complexe
 
-void checkVictory();     
-// TODO:
-
-piece generateFromContext();
+char generateFaceFromContext(int x, int y, char face);
 // TODO:
 
 char* formatChar(char c);   
@@ -60,5 +58,9 @@ void AI();
 // TODO:
 
 int choixTailleTableau();
+//* DONE
+//? Interface
 
 int rejouer();
+//* DONE
+//? Interface
