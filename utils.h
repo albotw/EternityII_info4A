@@ -17,7 +17,7 @@ void updateRandomSeed();
 
 int RandomizedInt(int a, int b);
 ///* DONE
-//? B > A
+//? B > A && return E [a;b]
 
 void printArraySize(void* array);
 //* DONE

@@ -22,7 +22,7 @@ int nbPieces;
 void generateTab(int size, int mode); 
 //* ~DONE
 // TODO: randomisation des pièces
-//? mode 1 = mode simple, mode 2 = mode complexe
+//? mode 0 = mode simple, mode 1 = mode complexe
 
 void rotate(int posX, int posY);   
 //* DONE

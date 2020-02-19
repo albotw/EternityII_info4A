@@ -42,5 +42,6 @@ void updateRandomSeed()
 
 int RandomizedInt(int a, int b)
 {
+    b++;
     return (rand() % (b - a)) + a;
 }

@@ -59,12 +59,14 @@ char generateFaceFromContext(int x, int y, char face)
     }
     else 
     {
-        return 'A'+RandomizedInt(0, 4);
+        return 'A'+RandomizedInt(0, 3);
     }
 }
 
 void generateTab(int size, int mode)
 {
+    printf("####  Génération du tableau en cours  ####\n");
+
     switch (size)
     {
         case 4:
@@ -87,6 +89,7 @@ void generateTab(int size, int mode)
     cote = size;
 
     tab = (piece* )malloc(nbPieces * sizeof(piece));
+    printf("   Taille: %d x %d, %d pièces, %ld octets en mémoire\n", cote, cote, nbPieces, nbPieces * sizeof(piece));
 
     for (int i = 0; i < cote; i++)
     {
@@ -103,6 +106,36 @@ void generateTab(int size, int mode)
             setPieceAt(j, i, p);
         }
     }
+    printf("   Tableau résolu généré: %d conflits\n", checkConflicts());
+
+    int nbMoves = RandomizedInt(5, 50);
+    int rotations = 0;
+    int swaps = 0;
+
+    for (int i = 0; i < nbMoves; i++)
+    {
+        int x = RandomizedInt(0, cote -1);
+        int y = RandomizedInt(0, cote -1);
+
+        int action = RandomizedInt(0, mode);
+
+        if (action == 0)
+        {
+            rotate(x, y);
+            rotations++;
+        }
+        else if (action == 1)
+        {
+            int x2 = RandomizedInt(0, cote -1);
+            int y2 = RandomizedInt(0, cote -1);
+
+            swap(x, y, x2, y2);
+            swaps++;
+        }
+    }
+    printf("   Fin du mélange: %d mouvements dont %d rotations et %d échanges\n", nbMoves, rotations, swaps);
+    printf("####  Fin de la génération du tableau  ####\n");
+    println();
 }
 
 
@@ -293,7 +326,8 @@ int main()
         do{
             draw();
             victory = checkConflicts();
-            printf("Il y a %d conflits restants\n", victory);
+            println();
+            printf("Il y a \033[48;5;9m%d\033[0m conflits restants\n", victory);
             readCommand();
             
             println();
