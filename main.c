@@ -27,7 +27,6 @@ int checkConflicts()
             }
         }
     }
-
     return conflits / 2;
 }
 
@@ -66,26 +65,8 @@ char generateFaceFromContext(int x, int y, char face)
 void generateTab(int size, int mode)
 {
     printf("####  Génération du tableau en cours  ####\n");
-
-    switch (size)
-    {
-        case 4:
-            nbPieces = 16;
-            break;
-
-        case 5:
-            nbPieces = 25;
-            break;
-        
-        case 6:
-            nbPieces = 36;
-            break;
-        
-        case 7: 
-            nbPieces = 56;
-            break;
-    }
     
+    nbPieces = size * size;
     cote = size;
 
     tab = (piece* )malloc(nbPieces * sizeof(piece));
