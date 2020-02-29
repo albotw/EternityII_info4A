@@ -6,12 +6,12 @@
 
 typedef struct{
     void* adr;
-    int size;
+    unsigned size;
 }block;
 
-unsigned dmSize;    //? taille actuelle en Octets de la Pile
-unsigned nbBlocks;  //? nb de blocs instanciés dans la pile
-block* blocks;   //? Tableau référençant tous les blocs mémoire crées.
+unsigned dmSize;    //? taille actuelle en octets du tas
+unsigned nbBlocks;  //? nb de blocs instanciés dans le tas
+block** blocks;   //? Tableau référençant tous les blocs mémoire crées.
 
 int find(int mode, void* adr);
 //? mode == 0 ~> find first empty

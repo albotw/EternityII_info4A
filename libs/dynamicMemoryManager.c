@@ -12,16 +12,16 @@ int find(int mode, void* adr)
     }
     else if (mode == 1)
     {
-        int found = 0;
-        for(int i = 0; i < nbBlocks; i++)
-        {
-            block* tmp = blocks[i];
-            void* ptr = tmp->adr;
-            printf("%p | %p\n", &(*ptr), &(*adr));
-            if (found == 0 && ptr == adr)
+        if (adr != NULL){
+            int found = 0;
+            for(int i = 0; i < nbBlocks; i++)
             {
-                output = i;
-                found = 1;
+                void* ptr = blocks[i]->adr;
+                if (found == 0 && ptr == adr)
+                {
+                    output = i;
+                    found = 1;
+                }
             }
         }
     }
@@ -35,17 +35,19 @@ void* _malloc(unsigned size)
         dmSize = dmSize + size;
         nbBlocks++;
 
-        block b = {malloc(size), size};
+        block* b = calloc(1, sizeof(block));
+        b->adr = calloc(1, size);
+        b->size = size;
 
         int position = find(0, NULL);
-        blocks[position] = &b;
+        blocks[position] = b;
         
-        printf("Allocated %u bytes @ %p\n", size, b.adr);
-        return b.adr;
+        printf("Allocated %u bytes @ %p / %d available\n", b->size, b->adr, maxSize - dmSize);
+        return b->adr;
     }
     else
     {
-        printf("Error: dynamic memory saturated");
+        printf("Error: dynamic memory saturated\n");
         return NULL;
     }
 }
@@ -54,13 +56,19 @@ void _free(void* adr)
 {
     
     int position = find(1, adr);
-    printf("%d\n", position);
-    block* b = blocks[position];
-    dmSize = dmSize - b->size;
-    printf("%d\n", dmSize);
-    free(b->adr);
-    
-    blocks[position] = NULL;
+    if (position != -1)
+    {
+        block* b = blocks[position];
+        dmSize = dmSize - b->size;
+        printf("Released %u bytes @ %p / %d available\n", b->size, b->adr, maxSize - dmSize);
+        free(b->adr);
+        free(blocks[position]);
+        blocks[position] = NULL;
+    }
+    else
+    {
+        printf("Error: invalid adress\n");
+    }
 }
 
 
