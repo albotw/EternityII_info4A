@@ -8,14 +8,16 @@ int find(int mode, void* adr)
         do
         {
             output++;
-        }while(blocks[output] != NULL);
+        }while(blocks[output] != NULL && output < maxBlocks);
     }
     else if (mode == 1)
     {
         int found = 0;
         for(int i = 0; i < nbBlocks; i++)
         {
-            void* ptr = blocks[i]->adr;
+            block* tmp = blocks[i];
+            void* ptr = tmp->adr;
+            printf("%p | %p\n", &(*ptr), &(*adr));
             if (found == 0 && ptr == adr)
             {
                 output = i;
@@ -38,6 +40,7 @@ void* _malloc(unsigned size)
         int position = find(0, NULL);
         blocks[position] = &b;
         
+        printf("Allocated %u bytes @ %p\n", size, b.adr);
         return b.adr;
     }
     else
@@ -51,11 +54,17 @@ void _free(void* adr)
 {
     
     int position = find(1, adr);
+    printf("%d\n", position);
     block* b = blocks[position];
     dmSize = dmSize - b->size;
-    
-    free(adr);
+    printf("%d\n", dmSize);
+    free(b->adr);
     
     blocks[position] = NULL;
 }
 
+
+void initDMM()
+{
+    blocks = calloc(maxBlocks, sizeof(block));
+}
