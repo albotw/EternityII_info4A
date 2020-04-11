@@ -1,6 +1,6 @@
 #include "dynamicMemoryManager.h"
 
-int find(int mode, void* adr)
+int find(int mode, void* adr) //? utiliser rechercher dichotomique
 {
     int output = -1;
     if (mode == 0)
@@ -42,12 +42,14 @@ void* _malloc(unsigned size)
         int position = find(0, NULL);
         blocks[position] = b;
         
-        printf("Allocated %u bytes @ %p / %d available\n", b->size, b->adr, maxSize - dmSize);
+        if (verbose) printf("Allocated %u bytes @ %p / %d available\n", b->size, b->adr, maxSize - dmSize);
+
         return b->adr;
     }
     else
     {
-        printf("Error: dynamic memory saturated\n");
+        if (verbose) printf("Error: dynamic memory saturated\n");
+        
         return NULL;
     }
 }
@@ -60,19 +62,22 @@ void _free(void* adr)
     {
         block* b = blocks[position];
         dmSize = dmSize - b->size;
-        printf("Released %u bytes @ %p / %d available\n", b->size, b->adr, maxSize - dmSize);
+        nbBlocks--;
+
+        if (verbose) printf("Released %u bytes @ %p / %d available\n", b->size, b->adr, maxSize - dmSize);
+        
         free(b->adr);
         free(blocks[position]);
         blocks[position] = NULL;
     }
     else
     {
-        printf("Error: invalid adress\n");
+        if (verbose) printf("Error: invalid adress\n");
     }
 }
 
-
-void initDMM()
+void initDMM(int verboseMode)
 {
+    verbose = verboseMode;
     blocks = calloc(maxBlocks, sizeof(block));
 }

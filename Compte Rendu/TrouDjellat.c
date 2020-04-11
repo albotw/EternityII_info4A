@@ -1,6 +1,185 @@
-#include "main.h"
-#include "utils.h"
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 
+//! GESTION MéMOIRE ====================================================================
+#define maxSize 50000   //? Taille max en Octets
+#define maxBlocks 5000  //? Nombre max de blocs allouables.
+
+typedef struct{
+    void* adr;
+    unsigned size;
+}block;
+
+unsigned dmSize;    //? taille actuelle en octets du tas
+unsigned nbBlocks;  //? nb de blocs instanciés dans le tas
+block** blocks;   //? Tableau référençant tous les blocs mémoire crées.
+
+int verbose;    //? afficher les retours console ou non.
+
+int find(int mode, void* adr);
+//? mode == 0 ~> recherche du premier emplacement vide
+//? mode == 1 ~> recherche de l'adresse.
+
+void initDMM(int verboseMode);
+
+void* _malloc(unsigned size);
+
+void _free(void* adr);
+
+//! UTILITAIRE =============================================================
+
+void println(); //? affiche un retour a la ligne dans la console.
+
+void updateRandomSeed();    //? met a jour la graine pour l'aléatoire.
+
+int RandomizedInt(int a, int b);
+//? B > A && return E [a;b]
+
+//! MAIN ===================================================================
+typedef struct{
+    char N;
+    char E;
+    char S;
+    char W;
+}piece;
+
+piece* tab;
+
+int cote;   
+//? taille du côté du tableau
+
+int nbPieces;
+
+void generateTab(int size, int mode); 
+//? mode 0 = mode simple, mode 1 = mode complexe
+
+void rotate(int posX, int posY);   
+
+void swap(int x1,int y1, int x2, int y2); 
+
+piece getPieceAt(int x, int y); 
+
+void setPieceAt(int x, int y, piece p); 
+
+void draw(); 
+
+int checkConflicts();   
+
+char generateFaceFromContext(int x, int y, char face);
+
+char* formatChar(char c);   
+
+int choixTailleTableau();
+//? Interface
+
+int rejouer();
+//? Interface
+
+
+//! GESTION TAS ============================================================
+int find(int mode, void* adr) //? utiliser rechercher dichotomique
+{
+    int output = -1;
+    if (mode == 0)
+    {
+        do
+        {
+            output++;
+        }while(blocks[output] != NULL && output < maxBlocks);
+    }
+    else if (mode == 1)
+    {
+        if (adr != NULL){
+            int found = 0;
+            for(int i = 0; i < nbBlocks; i++)
+            {
+                void* ptr = blocks[i]->adr;
+                if (found == 0 && ptr == adr)
+                {
+                    output = i;
+                    found = 1;
+                }
+            }
+        }
+    }
+    return output;
+}
+
+void* _malloc(unsigned size)
+{
+    if (dmSize + size <= maxSize && nbBlocks + 1 <= maxBlocks)
+    {
+        dmSize = dmSize + size;
+        nbBlocks++;
+
+        block* b = calloc(1, sizeof(block));
+        b->adr = calloc(1, size);
+        b->size = size;
+
+        int position = find(0, NULL);
+        blocks[position] = b;
+        
+        if (verbose) printf("Allocated %u bytes @ %p / %d available\n", b->size, b->adr, maxSize - dmSize);
+
+        return b->adr;
+    }
+    else
+    {
+        if (verbose) printf("Error: dynamic memory saturated\n");
+        
+        return NULL;
+    }
+}
+
+void _free(void* adr)
+{
+    
+    int position = find(1, adr);
+    if (position != -1)
+    {
+        block* b = blocks[position];
+        dmSize = dmSize - b->size;
+        nbBlocks--;
+
+        if (verbose) printf("Released %u bytes @ %p / %d available\n", b->size, b->adr, maxSize - dmSize);
+        
+        free(b->adr);
+        free(blocks[position]);
+        blocks[position] = NULL;
+    }
+    else
+    {
+        if (verbose) printf("Error: invalid adress\n");
+    }
+}
+
+void initDMM(int verboseMode)
+{
+    verbose = verboseMode;
+    blocks = calloc(maxBlocks, sizeof(block));
+}
+
+//! UTILITAIRE ===========================================================
+
+void println()
+{
+    printf("\n");
+}
+
+void updateRandomSeed()
+{
+    srand(time(NULL));
+}
+
+int RandomizedInt(int a, int b)
+{
+    b++;
+    return (rand() % (b - a)) + a;
+}
+
+//! MAIN ===================================================================
 int checkConflicts()
 {
     int conflits = 0;
@@ -295,6 +474,7 @@ void readCommand()
     }
     free(command);
 }
+
 int main()
 {
     updateRandomSeed();

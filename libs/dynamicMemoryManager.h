@@ -13,11 +13,13 @@ unsigned dmSize;    //? taille actuelle en octets du tas
 unsigned nbBlocks;  //? nb de blocs instanciés dans le tas
 block** blocks;   //? Tableau référençant tous les blocs mémoire crées.
 
-int find(int mode, void* adr);
-//? mode == 0 ~> find first empty
-//? mode == 1 ~> find from address
+int verbose;    //?afficher les retours console ou non.
 
-void initDMM();
+int find(int mode, void* adr);
+//? mode == 0 ~> recherche du premier emplacement vide
+//? mode == 1 ~> recherche de l'adresse.
+
+void initDMM(int verboseMode);
 
 void* _malloc(unsigned size);
 

@@ -13,7 +13,7 @@ void println();
 //* DONE
 
 void updateRandomSeed();
-// TODO:
+//* DONE
 
 int RandomizedInt(int a, int b);
 ///* DONE
