@@ -304,8 +304,9 @@ int main()
     do
     {
         restart = 0;
+        int mode = selectionMode();
         int taille = choixTailleTableau();
-        generateTab(taille + 3, 1);
+        generateTab(taille + 3, mode);
         
         int victory;
         do{
@@ -328,6 +329,29 @@ int main()
     }
     while(restart);
     return 0;
+}
+
+int selectionMode()
+{
+    int choix;
+    int loop = 0;
+    do
+    {
+        loop = 0;
+        printf("Quel mode de jeu allez vous choisir ?\n");
+        printf("1: mode facile, que des rotations  ");
+        printf("2: mode complexe, rotations et échanges  ");
+        println();
+        scanf("%d", &choix);
+
+        if (1 > choix || choix > 2)
+        {
+            loop = 1;
+            printf("Erreur, option invalide\n");
+        }
+    } while (loop);
+    println();
+    return choix;
 }
 
 int choixTailleTableau()

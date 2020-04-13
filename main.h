@@ -64,3 +64,5 @@ int choixTailleTableau();
 int rejouer();
 //* DONE
 //? Interface
+
+int selectionMode();
