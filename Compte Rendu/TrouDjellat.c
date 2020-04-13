@@ -28,7 +28,8 @@ typedef struct{
 
 unsigned dmSize;    //? taille actuelle en octets du tas
 unsigned nbBlocks;  //? nb de blocs instanciés dans le tas
-container** index;   //? table d'indexation de tous les containers existants
+container** cIndex;   //? table d'indexation de tous les containers existants
+//! ATTENTION index existe dans string.h sous macOS ==> erreur de compilation.
 
 int verbose;    //? afficher les retours console ou non.
 
@@ -93,6 +94,8 @@ char generateFaceFromContext(int x, int y, char face);
 
 char* formatChar(char c); 
 
+int selectionMode();
+
 int choixTailleTableau();
 
 int rejouer();
@@ -122,7 +125,7 @@ int find(int mode, void* adr)
         do
         {
             output++;
-        }while(index[output] != NULL && output < maxBlocks);
+        }while(cIndex[output] != NULL && output < maxBlocks);
     }
     else if (mode == 1)
     {
@@ -130,7 +133,7 @@ int find(int mode, void* adr)
             int found = 0;
             for(int i = 0; i < nbBlocks; i++)
             {
-                void* ptr = index[i]->adr;
+                void* ptr = cIndex[i]->adr;
                 if (found == 0 && ptr == adr)
                 {
                     output = i;
@@ -163,7 +166,7 @@ void* _malloc(unsigned size)
         c->size = size;
 
         int position = find(0, NULL);
-        index[position] = c;
+        cIndex[position] = c;
         
         if (verbose) printf("Allocated %u bytes @ %p / %d available\n", c->size, c->adr, maxSize - dmSize);
 
@@ -190,15 +193,15 @@ void _free(void* adr)
     int position = find(1, adr);
     if (position != -1)
     {
-        container* c = index[position];
+        container* c = cIndex[position];
         dmSize = dmSize - c->size;
         nbBlocks--;
 
         if (verbose) printf("Released %u bytes @ %p / %d available\n", c->size, c->adr, maxSize - dmSize);
         
         free(c->adr);
-        free(index[position]);
-        index[position] = NULL;
+        free(cIndex[position]);
+        cIndex[position] = NULL;
     }
     else
     {
@@ -216,7 +219,7 @@ void _free(void* adr)
 void initDMM(int verboseMode)
 {
     verbose = verboseMode;
-    index = calloc(maxBlocks, sizeof(container));
+    cIndex = calloc(maxBlocks, sizeof(container));
 }
 
 //! UTILITAIRE ===========================================================
@@ -372,8 +375,8 @@ void generateTab(int size, int mode)
 
     for (int i = 0; i < nbMoves; i++)
     {
-        int x = RandomizedInt(0, cote -1);
-        int y = RandomizedInt(0, cote -1);
+        int x = RandomizedInt(0, cote);
+        int y = RandomizedInt(0, cote);
 
         int action = RandomizedInt(0, mode);
 
@@ -384,8 +387,8 @@ void generateTab(int size, int mode)
         }
         else if (action == 1)
         {
-            int x2 = RandomizedInt(0, cote -1);
-            int y2 = RandomizedInt(0, cote -1);
+            int x2 = RandomizedInt(0, cote);
+            int y2 = RandomizedInt(0, cote);
 
             swap(x, y, x2, y2);
             swaps++;
@@ -649,12 +652,14 @@ int main()
             victory = checkConflicts();
             println();
             printf("Il y a \033[48;5;9m%d\033[0m conflits restants\n", victory);
-            readCommand();
-            
+            if (victory != 0)
+            {
+                readCommand();
+            }
+
             println();
         }while(victory != 0);
-        
-        
+           
         restart = rejouer();
         if (restart)
         {
