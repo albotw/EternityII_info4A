@@ -1,9 +1,14 @@
+/**
+ * Projet d'info4A 2020
+ * Auteurs: Yann TROU et Wassim DJELLAT
+*/
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
 
-//! GESTION MéMOIRE ====================================================================
+//! GESTION TAS ====================================================================
 #define maxSize 50000   //? Taille max en Octets
 #define maxBlocks 5000  //? Nombre max de blocs allouables.
 
@@ -11,6 +16,7 @@ typedef struct{
     void* adr;
     unsigned size;
 }block;
+//? Structure contenant l'adresse du bloc réservé et sa taille.
 
 unsigned dmSize;    //? taille actuelle en octets du tas
 unsigned nbBlocks;  //? nb de blocs instanciés dans le tas
@@ -23,18 +29,24 @@ int find(int mode, void* adr);
 //? mode == 1 ~> recherche de l'adresse.
 
 void initDMM(int verboseMode);
+//? initialise la zone mémoire référençant tous les blocs.
 
 void* _malloc(unsigned size);
+//? alloue un bloc mémoire.
 
 void _free(void* adr);
+//? efface un bloc mémoire.
 
 //! UTILITAIRE =============================================================
 
-void println(); //? affiche un retour a la ligne dans la console.
+void println(); 
+//? affiche un retour a la ligne dans la console.
 
-void updateRandomSeed();    //? met a jour la graine pour l'aléatoire.
+void updateRandomSeed();    
+//? met a jour la graine pour l'aléatoire.
 
 int RandomizedInt(int a, int b);
+//? fonction qui retourne un entier aléatoire entre a et b.
 //? B > A && return E [a;b]
 
 //! MAIN ===================================================================
@@ -44,41 +56,68 @@ typedef struct{
     char S;
     char W;
 }piece;
+//? structure représentant une pièce avec ses 4 côtés.
 
 piece* tab;
+//? tableau contenant toutes les pièces.
 
 int cote;   
 //? taille du côté du tableau
 
 int nbPieces;
+//? nombre de pièces contenu dans le tableau.
 
 void generateTab(int size, int mode); 
 //? mode 0 = mode simple, mode 1 = mode complexe
 
 void rotate(int posX, int posY);   
+//? fait tourner une pièce.
 
 void swap(int x1,int y1, int x2, int y2); 
+//? échange deux pièces.
 
 piece getPieceAt(int x, int y); 
+//? va chercher la pièce en x, y
 
 void setPieceAt(int x, int y, piece p); 
+//? définit la pièce dans le tableau en x, y comme étant p.
 
 void draw(); 
+//? Interface
+//? affiche le tableau.
 
 int checkConflicts();   
+//? vérifie les conflits.
 
 char generateFaceFromContext(int x, int y, char face);
+//? retourne le char. de face de la pièce en fonction de sa pos. dans tab.
 
-char* formatChar(char c);   
+char* formatChar(char c); 
+//? formate la console en fonction de c.  
 
 int choixTailleTableau();
 //? Interface
+//? fonction qui offre le choix a l'utilisateur de la taille du tableau.
 
 int rejouer();
 //? Interface
+//? fontion qui permet a l'utilisateur de rejouer.
+
+
+//! *****************************************************
+//! *               IMPLEMENTATION                      *
+//! *****************************************************
 
 
 //! GESTION TAS ============================================================
+/**
+ * Fonction de recherche dans les blocs de mémoire.
+ * 
+ * @param mode type de recherche, 1er bloc libre ou de l'adresse [adr]
+ * @param adr  adresse du bloc recherché [mode == 1]
+ * 
+ * @return int | position de l'objet recherché dans [blocks]
+ */ 
 int find(int mode, void* adr) //? utiliser rechercher dichotomique
 {
     int output = -1;
